@@ -4,9 +4,8 @@
     "module": "CommonJS",
     "outDir": "dist",
     "rootDir": ".",
-    "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true
+    "esModuleInterop": true
   },
-  "include": ["index.ts", "api/**/*.ts"]
+  "include": ["index.ts", "api/**/*"]
 }
