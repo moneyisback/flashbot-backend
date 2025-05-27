@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import opportunitiesRouter from './api/opportunities'
+import type { Request, Response } from 'express'
 
 dotenv.config()
 
@@ -16,9 +17,9 @@ app.use(express.json())
 app.use('/api/opportunities', opportunitiesRouter)
 
 // Healthcheck
-app.get('/', (_, res) => {
-  res.send('✅ Flashbot backend is running.')
-})
+app.get('/', (_req: Request, res: Response) => {
+  res.status(200).send('OK');
+});
 
 // Server start
 app.listen(PORT, '0.0.0.0', () => {
