@@ -1,0 +1,10 @@
+docs
+test
+example
+examples
+coverage
+.eslint*
+.travis*
+.gitignore
+.editorconfig
+tsconfig.json
