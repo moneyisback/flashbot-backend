@@ -1,35 +1,37 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ProfitChart from './components/ProfitChart';
+import { useEffect, useState } from 'react'
+import ProfitChart from './components/ProfitChart'
+import './App.css'
 
-// Define the Opportunity type according to your API response structure
 interface Opportunity {
-  // Example fields, replace with actual fields from your API
-  id: string;
-  profit: number;
-  timestamp: string;
+  id?: string
+  profit: number
+  timestamp: string
 }
 
 function App() {
-  const [data, setData] = useState<Opportunity[]>([]);
+  const [data, setData] = useState<Opportunity[]>([])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-    axios.get<Opportunity>(`${import.meta.env.VITE_API_URL}/api/opportunities`)
-      .then((res: import('axios').AxiosResponse<Opportunity>) => {
-      setData((prev: Opportunity[]) => [...prev.slice(-49), res.data]); // Limite 50 points
-      });
-    }, 5000);
+    const fetchData = async () => {
+      const apiUrl = import.meta.env.VITE_API_URL
+      try {
+        const res = await fetch(`${apiUrl}/api/opportunities/history`)
+        const data = await res.json()
+        setData(data)
+      } catch (err) {
+        console.error('🔥 Failed to fetch:', err)
+      }
+    }
 
-    return () => clearInterval(interval);
-  }, []);
+    fetchData()
+  }, [])
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', color: '#fff', padding: '2rem' }}>
-      <h1 style={{ fontSize: '2rem', color: '#0f0' }}>🚀 Flashbot Dashboard</h1>
+    <div className="container">
+      <h1>🚀 Flashbot Dashboard</h1>
       <ProfitChart history={data} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
