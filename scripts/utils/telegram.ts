@@ -1,32 +1,28 @@
-import axios from 'axios';
+import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
-export async function sendTelegramAlert(message: string) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+dotenv.config();
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
+const TELEGRAM_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 
-  const payload = {
-    chat_id: chatId,
-    text: message,
-    parse_mode: undefined // ❌ ENLÈVE parse_mode pour TEST
-  };
-
-  console.log("📡 Envoi Telegram:");
-  console.log("➡️ URL:", url);
-  console.log("➡️ PAYLOAD:", JSON.stringify(payload, null, 2));
-
+export async function sendTelegramMessage(message: string) {
   try {
-    const res = await axios.post(url, payload);
-    console.log("✅ Message envoyé !");
-    console.log(res.data);
-  } catch (err: any) {
-    if (axios.isAxiosError(err)) {
-      console.error("❌ ENVOI TELEGRAM FAILED");
-      console.error("🔴 STATUS:", err.response?.status);
-      console.error("🔴 MESSAGE:", JSON.stringify(err.response?.data, null, 2));
-    } else {
-      console.error("❌ Unknown error:", err);
+    const res = await fetch(TELEGRAM_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message,
+        parse_mode: 'Markdown',
+      }),
+    });
+
+    if (!res.ok) {
+      console.error('❌ Telegram error:', await res.text());
     }
+  } catch (err) {
+    console.error('🔥 Failed to send Telegram message:', err);
   }
 }

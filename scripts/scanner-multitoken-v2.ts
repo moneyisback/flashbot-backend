@@ -4,7 +4,7 @@ import axios from 'axios'
 import Table from 'cli-table3'
 import { FlashbotsBundleProvider } from '@flashbots/ethers-provider-bundle'
 
-import { sendTelegramAlert } from './utils/telegram'
+import { sendTelegramMessage } from './utils/telegram'
 import { sendDiscordAlert } from '../utils/discord'
 import { pingWatchdog } from './utils/watchdog'
 import { logToCSV } from './utils/logger'
@@ -104,7 +104,7 @@ async function main() {
         headers: { Authorization: `Bearer ${API_SECRET}` }
       })
 
-      await sendTelegramAlert(
+      await sendTelegramMessage(
         `🚨 Opportunité MEV détectée:\n📦 Bloc: ${blockNumber}\n🪙 Token: ${token}\n📊 Spread: ${spread}\n💰 Profit: ${profit} ETH\n🌉 DEX: ${dex}`
       )
 
@@ -138,7 +138,7 @@ async function main() {
       )
 
       if (txHash) {
-        await sendTelegramAlert(`✅ TX envoyée\n🔗 https://etherscan.io/tx/${txHash}`)
+        await sendTelegramMessage(`✅ TX envoyée\n🔗 https://etherscan.io/tx/${txHash}`)
         await sendDiscordAlert(`✅ TX envoyée\n🔗 https://etherscan.io/tx/${txHash}`)
         lastExecution = now
       }

@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import opportunitiesRouter from './api/opportunities'
 import type { Request, Response } from 'express'
+import { verifyApiKey } from './utils/auth'
 
 dotenv.config()
 
@@ -14,7 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 // Routes
-app.use('/api/opportunities', opportunitiesRouter)
+app.use('/api/opportunities', verifyApiKey, opportunitiesRouter)
 
 // Healthcheck
 app.get('/', (_req: Request, res: Response) => {

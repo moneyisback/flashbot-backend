@@ -54,9 +54,10 @@ router.get('/latest', (_req: Request, res: Response): void => {
 })
 
 // GET /api/opportunities/history
-router.get('/history', (_req: Request, res: Response): void => {
-  console.log('🧪 [BACKEND] Reçu GET /history') // 👈 log de debug ici
-  res.send(opportunities?.slice(-50).reverse() || [])
+router.get('/history', (_req, res) => {
+  console.log('📩 [BACKEND] Reçu GET /history')
+  res.send(opportunities.slice(-50).reverse())
 })
+
 
 export default router
