@@ -10,6 +10,7 @@ interface Opportunity {
 
 function App() {
   const [data, setData] = useState<Opportunity[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +22,8 @@ function App() {
         setData(data)
       } catch (err) {
         console.error('🔥 Failed to fetch:', err)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -30,7 +33,7 @@ function App() {
   return (
     <div className="container">
       <h1>🚀 Flashbot Dashboard</h1>
-      <ProfitChart history={data} />
+      <ProfitChart history={loading ? [] : data} />
     </div>
   )
 }
