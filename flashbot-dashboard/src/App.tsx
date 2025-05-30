@@ -16,6 +16,7 @@ function App() {
       const apiUrl = import.meta.env.VITE_API_URL
       try {
         const res = await fetch(`${apiUrl}/api/opportunities/history`)
+        if (!res.ok) throw new Error(`Status ${res.status}`)
         const data = await res.json()
         setData(data)
       } catch (err) {
